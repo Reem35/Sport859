@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-var prefix = "+";
+var prefix = ".";
 client.on('ready', () => {
    console.log(`----------------`);
       console.log(`Desert Bot- Script By : EX Clan`);
@@ -8,43 +8,52 @@ client.on('ready', () => {
       console.log(`ON ${client.guilds.size} Servers '     Script By : EX Clan ' `);
     console.log(`----------------`);
   console.log(`Logged in as ${client.user.tag}!`);
-client.user.setGame(`Death Shop`,"http://twitch.tv/Death Shop")
+client.user.setGame(`WéSKKy Brodcast ,`,"http://twitch.tv/akrame35")
 client.user.setStatus("dnd")
 });
 
-client.on("message", async message => {
-        if(!message.channel.guild) return;
- var prefix= "+";
-        if(message.content.startsWith(prefix + 'server')) {
-        let guild = message.guild
-        let channel = message.channel
-        let guildicon = guild.icon_url
-        let members = guild.memberCount
-        let bots = guild.members.filter(m => m.user.bot).size
-        let humans = members - bots
-        let allchannels = guild.channels.size
-        let textchannels = guild.channels.filter(e => e.type === "text")
-        let voicechannels = guild.channels.filter(e => e.type === "voice")
-          var embed = new Discord.RichEmbed()
-          .setColor("#000000")
-          .setTitle(`معلومات عن السيرفر`)
-          .setDescription(`معلومات عن : ${guild.name}`)
-          .addField("صاحب السيرفر :", `${guild.owner}`, true)
-          .addField("أيدي السيرفر :", `${guild.id}`, true)
-          .addField("موقع السيرفر :", `${guild.region}`, true)
-          .addField("مستوى حماية السيرفر :", `${guild.verificationLevel}`, true)
-          .addField("عدد الرومات الصوتية :", `${voicechannels.size}`, true)
-          .addField("عدد الرومات الكتابية :", `${textchannels.size}`, true)
-          .addField("عدد اعضاء السيرفر :", `${members}`, true)
-          .addField("عدد البوتات :", `${bots}`, true)
-          .addField("عدد الاشخاص :", `${humans}`, true)
-          .addField("عدد رتب السيرفر :", `${guild.roles.size}`, true)
-          .addField(`أيموجيات الخاصة بالسيرفر : (${guild.emojis.size})`, `- ${guild.emojis.array()}`, true)
-          .setFooter(`تم انشاء هذه السيرفر في: ${guild.createdAt}`)
+cclient.on('message', message => {
+        var prefix = ".";
+              if(!message.channel.guild) return;
+    if(message.content.startsWith(prefix + 'bc')) {
+    if(!message.channel.guild) return message.channel.send('**هذا الأمر فقط للسيرفرات**').then(m => m.delete(5000));
+  if(!message.member.hasPermission('ADMINISTRATOR')) return      message.channel.send('**للأسف لا تمتلك صلاحية** `ADMINISTRATOR`' );
+    let args = message.content.split(" ").join(" ").slice(2 + prefix.length);
+    let copy = "Alpha Codes";
+    let request = `Requested By ${message.author.username}`;
+    if (!args) return message.reply('**يجب عليك كتابة كلمة او جملة لإرسال البرودكاست**');message.channel.send(`**هل أنت متأكد من إرسالك البرودكاست؟ \nمحتوى البرودكاست:** \` ${args}\``).then(msg => {
+    msg.react('✅')
+    .then(() => msg.react('❌'))
+    .then(() =>msg.react('✅'))
+   
+    let reaction1Filter = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id;
+    let reaction2Filter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
+   
+    let reaction1 = msg.createReactionCollector(reaction1Filter, { time: 12000 });
+    let reaction2 = msg.createReactionCollector(reaction2Filter, { time: 12000 });
+ reaction1.on("collect", r => {
+    message.channel.send(`**☑ | Done ... The Broadcast Message Has Been Sent For __${message.guild.members.size}__ Members**`).then(m => m.delete(5000));
+    message.guild.members.forEach(m => {
  
-       message.channel.send({ embed: embed });
- 
-      }
+  var bc = new
+       Discord.RichEmbed()
+       .setColor('RANDOM')
+       .setTitle('Broadcast')
+       .addField('سيرفر', message.guild.name)
+       .addField('المرسل', message.author.username)
+       .addField('الرسالة', args)
+       .setThumbnail(message.author.avatarURL)
+       .setFooter(copy, client.user.avatarURL);
+    m.send({ embed: bc })
+    msg.delete();
+    })
+    })
+    reaction2.on("collect", r => {
+    message.channel.send(`**Broadcast Canceled.**`).then(m => m.delete(5000));
+    msg.delete();
+    })
+    })
+    }
     });
 
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
